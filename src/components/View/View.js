@@ -29,8 +29,8 @@ const View = () => {
         <h5>{user.name}</h5>
         <h5>USER EMAIL:</h5>
         <h5>{user.email}</h5>
-        <h5>USER PASSWORD:</h5>
-        <h5>{user.password}</h5>
+        {/* <h5>USER PASSWORD:</h5> */}
+        {/* <h5>{user.password}</h5> */}
         <Col><Button variant='outline-secondary' onClick={backward}>Dashboard</Button></Col>
         </Row>
     </Container>

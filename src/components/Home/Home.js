@@ -7,7 +7,8 @@ import { AuthContext } from '../store/AuthContext';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [image,setImage] = useState()
+  const [image,setImage] = useState("")
+  
   
   const {user,setUser} = useContext(AuthContext)
   useEffect(() => {
@@ -23,34 +24,47 @@ const Home = () => {
       setUser(data.details)
       // console.log(user)
     })
-  },[])
+  },[user])
   // console.log(user)  
   function logout() {
     localStorage.clear();
     navigate('/login')
   }
 
-  function uploadPhoto(e) {
+  const uploadImage = () => {
+    const data = new FormData()
+    data.append('file',image)
+    data.append("upload_preset",'sxbx2ye4')
+    data.append("cloud_name",'dnqylncvu')
 
-    e.preventDefault();
-    const id = user._id;
-    // console.log(image)
-    const file= image.name
-    console.log(file)
-    fetch(`http://localhost:8000/api/uploadImg/${id}` ,{
+    fetch(" https://api.cloudinary.com/v1_1/dnqylncvu/image/upload",
+    {
+      method:'post',
+      body:data
+    })
+    .then(res => res.json())
+    .then(data => {
+      const id = user._id;
+      const url = data.url
+      fetch(`http://localhost:8000/api/uploadImg/${id}` ,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          file
+          url
       }),
     })
     .then(res => res.json())
     .then(data => {
-      // console.log(data.image)
+      setUser(data.profile)
     })
+      
+    })
+    .catch(err => console.log(err))
   }
+
+  
   return (
     <Container className='w-100'>
       <Row>
@@ -70,20 +84,21 @@ const Home = () => {
         
        <Col  className='w-25 m-auto mt-5 text-center'>
         <Col className='mt-4 mb-3'><h3>PROFILE</h3></Col>
-         <Image roundedCircle src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU7QbZ7Ps_hMspbECRCvLeT4GZC7h8HI2AIGrqbEKX&s"></Image>
-         <Form onSubmit={uploadPhoto} encType='multipart/form-data' >
+        {user.image ? 
+         <Image className='w-75 h-75' roundedCircle src={user.image} />: <h5 style={{color:'red'}}>Add your profile !!</h5>
+        }
           <Form.Control 
               
               onChange={(e) => {
                 setImage(e.target.files[0])
                 
-              }} name='image' className='mt-5'  type='file' multiple/>
-          <Button type='submit' className='mt-3' variant='outline-info'>Upload</Button>
-         </Form>
+              }}  className='mt-5'  type='file' />
+          <Button type='button' onClick={uploadImage} className='mt-3' variant='outline-info'>Upload</Button>
+         
        </Col>
        <Form.Label className='pt-5'><h5>User Name: {user.name}</h5></Form.Label><br/>
        <Form.Label className=''><h5>User Email: {user.email}</h5></Form.Label><br/>
-       <Form.Label className=''><h5>Password: {user.password}</h5></Form.Label>
+       {/* <Form.Label className=''><h5>Password: {user.password}</h5></Form.Label> */}
        </Col>
        
       </Row>

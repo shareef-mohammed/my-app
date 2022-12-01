@@ -18,10 +18,11 @@ const Dashboard = () => {
             setUsers(data.users)
         })
     },[])    
-    let i=1;
+   
     const navigate = useNavigate()
 
     function deleteUser(id) {
+      alert('Do you want delete this user...?')
 
         fetch(`http://localhost:8000/admin/remove/${id}`, {
             method:'DELETE',
@@ -71,8 +72,9 @@ const Dashboard = () => {
                 
               
                  users.map(user=>{
+                  
                    return  <tr>
-                   <td>{i}</td>
+                   <td>{}</td>
                    <td>{user.name}</td>
                    <td>{user.email}</td>
                    
