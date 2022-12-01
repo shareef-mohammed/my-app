@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Login from './components/Login/Login';
@@ -11,13 +11,18 @@ import Edit from './components/Edit/Edit'
 import AddUser from './components/AddUser/AddUser'
 
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // import logo from './logo.svg';
 import './App.css';
-
+import {AuthContext} from './components/store/AuthContext'
 function App() {
+  const [user,setUser] = useState('')
+
   return(
     
-    <BrowserRouter>
+    <AuthContext.Provider value={{user,setUser}}>
+      <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<Signup />} />
@@ -29,6 +34,7 @@ function App() {
         <Route path='/admin/addUser' element={<AddUser />} />
       </Routes>
     </BrowserRouter>
+    </AuthContext.Provider>
   )
 }
 

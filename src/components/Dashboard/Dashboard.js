@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { useNavigate, Link } from 'react-router-dom'
-import './Dashboard.css'
+import { Container,Col,Navbar,Row,Button, Table} from 'react-bootstrap';
+
 
 const Dashboard = () => {
     const [users,setUsers] = useState([])
     useEffect(() => {
-        fetch('http://localhost:7000/admin/dashboard' , {
+        fetch('http://localhost:8000/admin/dashboard' , {
             headers: {
                 'Content-Type' : 'application/json',
               },
@@ -22,7 +23,7 @@ const Dashboard = () => {
 
     function deleteUser(id) {
 
-        fetch(`http://localhost:7000/admin/remove/${id}`, {
+        fetch(`http://localhost:8000/admin/remove/${id}`, {
             method:'DELETE',
             headers: {
                 'Content-Type' : 'application/json',
@@ -34,22 +35,35 @@ const Dashboard = () => {
         })
     }
    function logout() {
+    localStorage.clear();
     navigate('/admin/login')
    }
 
   return (
-    <div className='container3'>
-        <div className="nav">
+    <Container className='text-center'>
+        <Row>
+        <Navbar>
+      <Container>
+        <Navbar.Brand href="#home"><h4>DASHBOARD</h4></Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+          <Button variant='outline-danger' onClick={logout}>Logout</Button>
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+        {/* <div className="nav">
             <h4>Admin Dashboard</h4>
-            <div className='btndiv'><button className='btn' onClick={logout}>Logout</button></div>
-        </div>
-        <Link to={'/admin/addUser'}><button >Add User</button></Link>
-        <table>
+            <Col className='btndiv'><Button className='btn' onClick={logout}>Logout</Button></Col>
+        </div> */}
+        <Col className='text-start pb-3'><Link to={'/admin/addUser'}><Button variant='outline-primary'>Add User</Button></Link></Col>
+        <Table>
             <thead>
                 <th>SI.No</th>
                 <th>User Name</th> 
                 <th>Email Id</th>
-                <th>Password</th>
+                
                 <th>Acitons</th>
             </thead>
             <tbody>
@@ -61,12 +75,13 @@ const Dashboard = () => {
                    <td>{i}</td>
                    <td>{user.name}</td>
                    <td>{user.email}</td>
-                   <td>{user.password}</td>
+                   
                    <td>
-                   <Link to={`/admin/view/${user._id}`}><button>View</button></Link>
-                   <Link to={`/admin/edit/${user._id}`}><button>Edit</button></Link>
-                   <button onClick={()=>deleteUser(user._id)}>Delete</button>
-                    
+                    <Col className='d-flex'>
+                   <Col className=''><Link  to={`/admin/view/${user._id}`}><Button className='' variant='outline-info'>View</Button></Link></Col>
+                   <Col className=''><Link to={`/admin/edit/${user._id}`}><Button className='' variant='outline-warning'>Edit</Button></Link></Col>
+                   <Col className=''><Button className='' variant='outline-danger' onClick={()=>deleteUser(user._id)}>Delete</Button></Col>
+                   </Col>
                    </td>
                </tr>
               
@@ -75,8 +90,9 @@ const Dashboard = () => {
             }
 
             </tbody>
-        </table>
-    </div>
+        </Table>
+        </Row>
+    </Container>
   )
 }
 

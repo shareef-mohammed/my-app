@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Container,Col,Row,Button } from 'react-bootstrap';
 
 const View = () => {
     const [user,setUser] = useState('')
     const {id} = useParams()
     const navigate = useNavigate()
     useEffect(()=>{
-        fetch(`http://localhost:7000/admin/view/${id}`, {
+        fetch(`http://localhost:8000/admin/view/${id}`, {
             headers: {
                 'Content-Type' : 'application/json',
             },
@@ -21,16 +22,18 @@ const View = () => {
         navigate('/admin/dashboard')
     }
   return (
-    <div>
-        <h3>User Details</h3>
-        <h4>User Name:</h4>
+    <Container className='text-center pt-5'>
+        <Row>
+        <h3 style={{color:'pink'}}>USER DETAILS</h3>
+        <h5>USER NAME:</h5>
         <h5>{user.name}</h5>
-        <h4>User Email:</h4>
+        <h5>USER EMAIL:</h5>
         <h5>{user.email}</h5>
-        <h4>User Password:</h4>
+        <h5>USER PASSWORD:</h5>
         <h5>{user.password}</h5>
-        <button onClick={backward}>Dashboard</button>
-    </div>
+        <Col><Button variant='outline-secondary' onClick={backward}>Dashboard</Button></Col>
+        </Row>
+    </Container>
   )
 }
 
