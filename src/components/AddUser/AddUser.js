@@ -56,6 +56,7 @@ export default function AddUser() {
         className='input'
         type="text"
         value={name}
+        required
         onChange={(e) => setName(e.target.value)}
         placeholder="Username"
         />
@@ -66,6 +67,7 @@ export default function AddUser() {
         className='input'
         type="email"
         value={email}
+        required
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
         />
@@ -76,6 +78,7 @@ export default function AddUser() {
         className='input'
         type="password"
         value={password}
+        required
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
         />
@@ -86,6 +89,7 @@ export default function AddUser() {
         className='input'
         type="password"
         value={password2}
+        required
         onChange={(e) => setPassword2(e.target.value)}
         placeholder="Password"
         />

@@ -7,14 +7,21 @@ import { Container,Col,Navbar,Row,Button, Table} from 'react-bootstrap';
 const Dashboard = () => {
     const [users,setUsers] = useState([])
     useEffect(() => {
+      const admin = localStorage.getItem("admin");
         fetch('http://localhost:8000/admin/dashboard' , {
             headers: {
                 'Content-Type' : 'application/json',
+                "X-Custom-Header": `${admin}`,
               },
         })
         .then(res => res.json())
         .then(data => {
             console.log(data.users)
+            
+            if (data.errormsg) {
+              navigate("/admin/login");
+
+            }
             setUsers(data.users)
         })
     },[])    

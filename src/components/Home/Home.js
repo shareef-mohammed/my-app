@@ -17,10 +17,15 @@ const Home = () => {
     fetch(`http://localhost:8000/api/userDetails/${token}`,{
       headers: {
         'Content-Type': 'application/json',
+        "X-Custom-Header": `${token}`,
     },
     })
     .then(res => res.json())  
     .then(data => {
+      if (data.errormsg) {
+        navigate("/login");
+
+      }
       setUser(data.details)
       // console.log(user)
     })
